@@ -3,12 +3,11 @@ import csv
 import numpy as np
 
 plt.ioff()
-fig = plt.figure(figsize=(11,8.5), dpi=600)
-sub = fig.add_subplot(111)
-sub.axis([0,0.3,0,46000])
+fig = plt.figure(figsize=(12,8), dpi=600)
+plt.axis([0,0.3,0,46000])
 plt.title('Motor startup with various brushed and brushless motors with modified Simonk firmware')
 plt.xlabel('Seconds since startup command')
-plt.ylabel('eRPM')
+plt.ylabel('RPM')
 
 files = ['flywheel-700-6zc-0_5-1','inrunner-XK2445-3500','inrunner-XK2858-2700','inrunner-B2857-15L-1900','inrunner-XK2845-1900','inrunner-XK2845-B-2000','outrunner-NTM-3530-1400']
 labels = ['Outrunner 2627-3800 19A @ 3S','Inrunner XK2445-3500 8A @ 3S','Inrunner XK2858-2700 11A @ 3S','Inrunner B2857-15L-1900 7A @ 3S','Inrunner XK2845-1900 5A @ 3S','Inrunner XK2845-B-2000 5A @ 3S','Outrunner NTM 3530-1400 16A @ 3S','MTB Wolverine 47A @ 2S','3240 17A @ 3S','MTB Hellcat 22A @ 3S','3240 11A @ 2S','MTB Honeybadger 14A @ 2S','MTB Rhino 7A @ 3S']
@@ -32,11 +31,11 @@ for fileName in files:
         elif len(row) != 0:
             print('Error:')
             print(row)
-    sub.scatter(times, speeds, color=colors[i], s=0.5, label=labels[i])
+    plt.scatter(times, speeds, color=colors[i], s=0.5, label=labels[i])
     if regressions:
         xp = np.linspace(0,0.5,500)
         p = np.poly1d(np.polyfit(np.array(times), np.array(speeds), 5))
-        sub.plot(xp, p(xp), color=colors[i], label=labels[i], linewidth=2)
+        plt.plot(xp, p(xp), color=colors[i], label=labels[i], linewidth=2)
     file.close()
     i+=1
 
@@ -49,9 +48,9 @@ if brushed:
         for row in reader:
             times.append(float(row[0]))
             speeds.append(float(row[1])*1000)
-        sub.plot(times, speeds, label=labels[i], color=colors[i], linewidth=3)
+        plt.plot(times, speeds, label=labels[i], color=colors[i], linewidth=3)
         file.close()
         i+=1
 
 plt.legend(loc='lower right', scatterpoints=1, markerscale=10)
-fig.savefig('simonk-capture-'+'-'.join(files)+('-brushed' if brushed else '')+('-regressions' if regressions else '')+'-.png', bbox_inches='tight')
+fig.savefig('simonk-capture-'+'-'.join(files)+('-brushed' if brushed else '')+('-regressions' if regressions else '')+'.png', bbox_inches='tight')

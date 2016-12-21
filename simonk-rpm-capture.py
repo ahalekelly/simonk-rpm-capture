@@ -21,6 +21,6 @@ while 's' not in data:
 with open(fileName, 'a') as csvFile:
     csvWriter = csv.writer(csvFile)
     for timeMicros, commutationMicros in re.findall('b(\d*)m(\d*)e',data):
-        csvWriter.writerow((int(timeMicros)/1000000, 60/2/3*1000000/int(commutationMicros)))
+        csvWriter.writerow((int(timeMicros)/1000000, 60/2*1000000/int(commutationMicros)))
 
 print('done')

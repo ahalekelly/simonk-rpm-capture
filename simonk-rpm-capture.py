@@ -18,6 +18,9 @@ while 's' not in data:
     data += ser.read(1000000).decode('ascii')
     sleep(0.1)
 
+print(data)
+ser.close()
+
 with open(fileName, 'a') as csvFile:
     csvWriter = csv.writer(csvFile)
     for timeMicros, commutationMicros in re.findall('b(\d*)m(\d*)e',data):
